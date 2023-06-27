@@ -19,44 +19,44 @@ class Spa:
 
     async def update_status(self):        
         """
-        Indicates if the device is currently online
+        Fetches the Status of the Spa
         """
         result = await self.api.send_command("status")
         
         data = result["data"]                              
-        self.updated_at = datetime.fromtimestamp(data["updated_at"])
+        """self.updated_at = datetime.fromtimestamp(data["updated_at"])"""
         attr = data["attr"]
         
-        self.wave_appm_min = attr["wave_appm_min"]
-        self.heat_timer_min = attr["heat_timer_min"]
-        self.earth = attr["earth"]
-        self.wave_timer_min = attr["wave_timer_min"]
+        self.wave_appm_min = 0
+        self.heat_timer_min = attr["timer_delay"]
+        self.earth = 0
+        self.wave_timer_min = 0
 
-        self.filter_timer_min = attr["filter_timer_min"]
-        self.heat_appm_min = attr["heat_appm_min"]
-        self.filter_appm_min = attr["filter_appm_min"]
+        self.filter_timer_min = 0
+        self.heat_appm_min = attr["timer_duration"]
+        self.filter_appm_min = 0
 
-        self.locked = attr["locked"]
+        self.locked = 0
 
         self.power = attr["power"] == 1
-        self.heat_power = attr["heat_power"] == 1
-        self.wave_power = attr["wave_power"] == 1
-        self.filter_power = attr["filter_power"] == 1
+        self.heat_power = attr["heat"] == 1
+        self.wave_power = attr["airjet"] == 1
+        self.filter_power = attr["filter"] == 1
 
         self.temp_now = attr["temp_now"]
         self.temp_set = attr["temp_set"]
-        self.temp_set_unit ="°C" if attr["temp_set_unit"]=="摄氏" else "°F"
-        self.heat_temp_reach = attr["heat_temp_reach"] == 1
+        self.temp_set_unit ="°C" if attr["temp_set_unit"]=="1" else "°F"
+        self.heat_temp_reach = 0
 
-        self.system_err1 = attr["system_err1"]
-        self.system_err2 = attr["system_err2"]
-        self.system_err3 = attr["system_err3"]
-        self.system_err4 = attr["system_err4"]
-        self.system_err5 = attr["system_err5"]
-        self.system_err6 = attr["system_err6"]
-        self.system_err7 = attr["system_err7"]
-        self.system_err8 = attr["system_err8"]
-        self.system_err9 = attr["system_err9"]            
+        self.system_err1 = attr["e01"]
+        self.system_err2 = attr["e02"]
+        self.system_err3 = attr["e03"]
+        self.system_err4 = attr["e04"]
+        self.system_err5 = attr["e05"]
+        self.system_err6 = attr["e06"]
+        self.system_err7 = attr["e07"]
+        self.system_err8 = attr["e08"]
+        self.system_err9 = attr["e09"]            
 
     async def set_power(self, power):
         """
