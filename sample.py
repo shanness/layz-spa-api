@@ -6,6 +6,10 @@ import asyncio
 from layz_spa.auth import Auth
 from layz_spa.spa import Spa
 from layz_spa.errors import Error
+
+# Just here for debugging interactively
+spa=None
+
 async def main():
     cache_file = Path("test_token.cache")
 
@@ -22,21 +26,24 @@ async def main():
             print ("Unable to authenticate: ", authError )
             return
 
+    global spa
     spa = Spa(response["data"]["api_token"], response["devices"][0]["did"])
     
-    print(await spa.is_online())
+    print(f"Spa Online : {await spa.is_online()}")
     await spa.update_status()
-    print("current power", spa.temp_set)    
+    print(f"Spa Online : {await spa.is_online()}")
+ #   print("current power", spa.temp_set)    
 
-    await spa.set_power(True)
-    print("current power 1", spa.power)    
+#    await spa.set_power(True)
+#    print("current power 1", spa.power)    
 
- 
+    print("Methods : set_target_temperature, set_wave_power, set_heat_power, set_power, set_filter_power")
+    print(f"Spa is currently at {spa.temp_now}{spa.temp_set_unit} and set to {spa.temp_set}")
 
    # await spa.set_power(True)
-    print("current power 2", spa.power)    
+#    print("current power 2", spa.power)    
 
-    await spa.set_target_temperature(22)
+#    await spa.set_target_temperature(38)
 
 if __name__ == "__main__":
     loop = asyncio.get_event_loop()

@@ -22,10 +22,13 @@ class Spa:
         Fetches the Status of the Spa
         """
         result = await self.api.send_command("status")
+        print(result)
         
         data = result["data"]                              
+        print(data)
         """self.updated_at = datetime.fromtimestamp(data["updated_at"])"""
-        attr = data["attr"]
+        #attr = data["attr"]
+        attr = data
         
         self.wave_appm_min = 0
         self.heat_timer_min = attr["timer_delay"]
@@ -45,7 +48,8 @@ class Spa:
 
         self.temp_now = attr["temp_now"]
         self.temp_set = attr["temp_set"]
-        self.temp_set_unit ="°C" if attr["temp_set_unit"]=="1" else "°F"
+        #self.temp_set_unit ="°C" if attr["temp_set_unit"]=="1" else "°F"
+        self.temp_set_unit ="°C" if attr["temp_unit"]==1 else "°F"
         self.heat_temp_reach = 0
 
         self.system_err1 = attr["e01"]
